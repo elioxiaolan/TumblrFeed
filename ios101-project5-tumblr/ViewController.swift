@@ -15,6 +15,26 @@ class ViewController: UIViewController {
         
         fetchPosts()
     }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return posts.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "YourCellIdentifier", for: indexPath) as! YourCustomCell // Replace with your cell class and identifier
+
+        let post = posts[indexPath.row]
+        cell.summaryLabel.text = post.summary
+
+        // Assuming post.photos is an array of photo URLs
+        if let photoURL = post.photos.first?.originalSize.url {
+            if let imageURL = URL(string: photoURL) {
+                Nuke.loadImage(with: imageURL, into: cell.postImageView)
+            }
+        }
+
+        return cell
+    }
 
 
 
